@@ -1,0 +1,647 @@
+/* =========================================================
+   KelolaKost — Stylesheet Utama
+   Palet: teal gelap (identitas kunci/hunian), emas hangat (aksen "lunas/uang")
+   ========================================================= */
+
+:root {
+    --color-bg:        #F4F6F5;
+    --color-surface:   #FFFFFF;
+    --color-primary:   #0F3D3E;   /* teal gelap - warna identitas */
+    --color-primary-light: #1B6B67;
+    --color-accent:    #D4A34C;   /* emas hangat - aksen */
+    --color-text:      #1B1F1D;
+    --color-text-muted:#5B6A66;
+    --color-border:    #E1E7E5;
+    --color-success:   #2E8B57;
+    --color-success-bg:#E7F5EC;
+    --color-danger:    #C1443C;
+    --color-danger-bg: #FBEAE9;
+    --color-warning-bg:#FFF6E5;
+
+    --radius: 10px;
+    --shadow-sm: 0 1px 2px rgba(15, 61, 62, 0.06);
+    --shadow-md: 0 4px 16px rgba(15, 61, 62, 0.08);
+
+    --sidebar-width: 240px;
+    --font-display: 'Poppins', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--color-primary);
+}
+
+a { color: var(--color-primary-light); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* =============== LOGIN PAGE =============== */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, var(--color-primary) 0%, #0A2A2B 100%);
+    padding: 20px;
+}
+
+.login-card {
+    background: var(--color-surface);
+    width: 100%;
+    max-width: 380px;
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+}
+
+.login-card .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--color-primary);
+    margin-bottom: 4px;
+}
+
+.login-card .tagline {
+    color: var(--color-text-muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+}
+
+.login-card form { text-align: left; }
+
+/* =============== LAYOUT (APP) =============== */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--color-primary);
+    color: #EAF2F1;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+}
+
+.sidebar .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    color: #fff;
+    padding: 0 24px 24px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 16px;
+}
+
+.sidebar .brand span { color: var(--color-accent); }
+
+.sidebar nav { flex: 1; }
+
+.sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    color: #CFE4E2;
+    font-size: 14px;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    transition: background 0.15s, color 0.15s;
+}
+
+.sidebar nav a:hover {
+    background: rgba(255,255,255,0.06);
+    text-decoration: none;
+    color: #fff;
+}
+
+.sidebar nav a.active {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border-left-color: var(--color-accent);
+}
+
+.sidebar .icon { font-size: 16px; width: 18px; text-align: center; }
+
+.sidebar .logout {
+    padding: 12px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 12px;
+}
+
+.sidebar .logout a { color: #F3B5AF; }
+
+.main-content {
+    flex: 1;
+    padding: 28px 32px;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.topbar .user-chip {
+    background: var(--color-surface);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    box-shadow: var(--shadow-sm);
+    color: var(--color-text-muted);
+}
+
+/* =============== CARDS / STATS =============== */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    border-top: 3px solid var(--color-primary-light);
+}
+
+.stat-card.accent { border-top-color: var(--color-accent); }
+.stat-card.danger { border-top-color: var(--color-danger); }
+.stat-card.success { border-top-color: var(--color-success); }
+
+.stat-card .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-bottom: 6px;
+}
+
+.stat-card .value {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.card {
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* =============== FORMS =============== */
+label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--color-text);
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    margin-bottom: 16px;
+    background: #fff;
+    color: var(--color-text);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 1px;
+    border-color: var(--color-primary-light);
+}
+
+textarea { resize: vertical; min-height: 70px; }
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 640px) {
+    .form-row { grid-template-columns: 1fr; }
+}
+
+/* =============== BUTTONS =============== */
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn:hover { text-decoration: none; }
+
+.btn-primary { background: var(--color-primary); color: #fff; }
+.btn-primary:hover { background: var(--color-primary-light); }
+
+.btn-accent { background: var(--color-accent); color: #3A2A05; }
+.btn-accent:hover { opacity: 0.9; }
+
+.btn-danger { background: var(--color-danger-bg); color: var(--color-danger); }
+.btn-danger:hover { background: #f7d9d7; }
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+}
+.btn-outline:hover { background: var(--color-bg); }
+
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-block { width: 100%; }
+
+/* =============== TABLES =============== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+thead th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--color-border);
+}
+
+tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+}
+
+tbody tr:hover { background: #FAFBFA; }
+
+.actions-cell { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* =============== BADGES =============== */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-success { background: var(--color-success-bg); color: var(--color-success); }
+.badge-danger  { background: var(--color-danger-bg); color: var(--color-danger); }
+.badge-neutral { background: #EEF1F0; color: var(--color-text-muted); }
+.badge-warning { background: var(--color-warning-bg); color: #8A6116; }
+
+/* =============== ALERTS =============== */
+.alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    font-size: 14px;
+}
+
+.alert-success { background: var(--color-success-bg); color: var(--color-success); }
+.alert-danger { background: var(--color-danger-bg); color: var(--color-danger); }
+.alert-warning { background: var(--color-warning-bg); color: #8A6116; }
+
+/* =============== EMPTY STATE =============== */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--color-text-muted);
+}
+
+/* =============== REMINDER LIST (Pengingat Jatuh Tempo) =============== */
+.reminder-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    border-radius: 8px;
+    background: var(--color-warning-bg);
+    margin-bottom: 10px;
+    border-left: 4px solid var(--color-accent);
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.reminder-item.overdue {
+    background: var(--color-danger-bg);
+    border-left-color: var(--color-danger);
+}
+
+.reminder-item .info strong { display: block; color: var(--color-text); }
+.reminder-item .info span { font-size: 13px; color: var(--color-text-muted); }
+
+/* =============== UTILITIES =============== */
+.text-muted { color: var(--color-text-muted); }
+.mb-0 { margin-bottom: 0; }
+.mt-16 { margin-top: 16px; }
+.d-flex { display: flex; }
+.gap-8 { gap: 8px; }
+.align-center { align-items: center; }
+
+/* =============== RESPONSIVE =============== */
+@media (max-width: 860px) {
+    .app-shell { flex-direction: column; }
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 12px 0;
+    }
+    .sidebar .brand { display: none; }
+    .sidebar nav { display: flex; flex: none; }
+    .sidebar nav a { border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+    .sidebar nav a.active { border-left-color: transparent; border-bottom-color: var(--color-accent); }
+    .sidebar .logout { border-top: none; margin: 0; padding: 12px 16px; }
+    .main-content { padding: 20px; }
+}
+
+/* =========================================================
+   LANDING PAGE (index.php - beranda publik)
+   ========================================================= */
+.landing-hero {
+    background: linear-gradient(160deg, var(--color-primary) 0%, #0A2A2B 100%);
+    color: #fff;
+    padding: 24px 20px 60px;
+}
+
+.landing-nav {
+    max-width: 1000px;
+    margin: 0 auto 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.landing-nav .brand { font-family: var(--font-display); font-weight: 700; font-size: 22px; }
+
+.landing-nav-links a {
+    color: #fff;
+    opacity: 0.9;
+    margin-left: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.landing-nav-links a:hover { opacity: 1; text-decoration: underline; }
+
+.landing-hero-content {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.landing-hero-content h1 {
+    color: #fff;
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.landing-alamat { opacity: 0.9; margin-bottom: 16px; }
+.landing-desc { opacity: 0.85; line-height: 1.6; margin-bottom: 24px; }
+
+.landing-quick-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 28px;
+}
+.landing-quick-stats div { display: flex; flex-direction: column; align-items: center; }
+.landing-quick-stats strong { font-family: var(--font-display); font-size: 28px; color: var(--color-accent); }
+.landing-quick-stats span { font-size: 13px; opacity: 0.85; }
+
+.landing-cta { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+.btn-outline-light {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.6);
+}
+.btn-outline-light:hover { background: rgba(255,255,255,0.12); text-decoration: none; }
+
+.landing-main {
+    max-width: 1000px;
+    margin: -32px auto 0;
+    padding: 0 20px 60px;
+}
+
+.landing-main h2 { color: var(--color-primary); }
+
+.kamar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.kamar-card {
+    background: var(--color-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+    border-top: 4px solid var(--color-border);
+}
+.kamar-card.tersedia { border-top-color: var(--color-success); }
+.kamar-card.terisi { border-top-color: var(--color-text-muted); opacity: 0.85; }
+
+.kamar-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+.kamar-card-head h3 { margin-bottom: 0; }
+
+.kamar-card-tipe { color: var(--color-text-muted); font-size: 13px; margin-bottom: 8px; }
+.kamar-card-harga { font-family: var(--font-display); font-weight: 600; color: var(--color-primary); font-size: 18px; margin-bottom: 8px; }
+.kamar-card-harga span { font-size: 12px; font-weight: 400; color: var(--color-text-muted); }
+.kamar-card-fasilitas { font-size: 13px; color: var(--color-text-muted); margin-bottom: 14px; line-height: 1.5; }
+
+.landing-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.landing-footer {
+    text-align: center;
+    padding: 24px 20px 40px;
+    color: var(--color-text-muted);
+    font-size: 13px;
+}
+.landing-footer p { margin: 4px 0; }
+
+@media (max-width: 700px) {
+    .landing-info-grid { grid-template-columns: 1fr; }
+    .landing-hero-content h1 { font-size: 28px; }
+}
+
+/* =========================================================
+   TAB SWITCH (lupa_password.php)
+   ========================================================= */
+.tab-switch {
+    display: flex;
+    border-radius: 8px;
+    background: var(--color-bg);
+    padding: 4px;
+    margin-bottom: 20px;
+}
+.tab-switch a {
+    flex: 1;
+    text-align: center;
+    padding: 8px 0;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+.tab-switch a.active {
+    background: var(--color-surface);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+}
+.tab-switch a:hover { text-decoration: none; }
+
+/* =========================================================
+   QRIS PAYMENT PAGE (bayar_qris.php)
+   ========================================================= */
+.qris-simulasi-badge {
+    display: inline-block;
+    background: var(--color-warning-bg);
+    color: #8A6116;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin: 8px 0 16px;
+}
+
+.qris-box {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+/* =========================================================
+   BUKTI PEMBAYARAN (bukti_pembayaran.php)
+   ========================================================= */
+.bukti-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg);
+    padding: 30px 16px;
+}
+
+.bukti-card {
+    background: var(--color-surface);
+    width: 100%;
+    max-width: 420px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 32px;
+}
+
+.bukti-header {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.bukti-status {
+    color: var(--color-success);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.bukti-jumlah {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 20px 0;
+}
+
+.bukti-table td { padding: 8px 0; border-bottom: 1px dashed var(--color-border); }
+.bukti-table tr:last-child td { border-bottom: none; }
+
+.bukti-footer-note {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    text-align: center;
+    margin-top: 20px;
+    line-height: 1.5;
+}
+
+.bukti-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+@media print {
+    .bukti-actions { display: none; }
+    .bukti-page { background: #fff; padding: 0; }
+    .bukti-card { box-shadow: none; }
+}
