@@ -97,6 +97,33 @@ function pengaturan(PDO $pdo): array
 }
 
 /**
+ * Email penagihan penyewa.
+ *
+ * Memakai kolom email_penagihan bila diisi; jika kosong, fallback
+ * ke email login penyewa.
+ */
+function email_penagihan(array $penyewa): string
+{
+    $email = trim((string) ($penyewa['email_penagihan'] ?? ''));
+
+    if ($email === '') {
+        $email = trim((string) ($penyewa['email'] ?? ''));
+    }
+
+    return $email;
+}
+
+/**
+ * Bangun tautan mailto dengan subjek & isi yang sudah di-encode.
+ */
+function link_mailto(string $email, string $subjek, string $isi): string
+{
+    return 'mailto:' . rawurlencode($email)
+        . '?subject=' . rawurlencode($subjek)
+        . '&body=' . rawurlencode($isi);
+}
+
+/**
  * Samakan status kamar dengan ada/tidaknya penyewa aktif.
  */
 function sync_kamar_status(PDO $pdo, int $kamarId): void

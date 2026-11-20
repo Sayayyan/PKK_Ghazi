@@ -12,7 +12,8 @@ $id = (int) ($_GET['id'] ?? 0);
 
 $stmt = $pdo->prepare('
     SELECT b.*, t.periode_bulan, t.periode_tahun, t.jumlah_tagihan,
-           p.id AS penyewa_id, p.nama, k.nomor_kamar, k.tipe
+           p.id AS penyewa_id, p.nama, p.email, p.email_penagihan,
+           k.nomor_kamar, k.tipe
     FROM pembayaran b
     JOIN tagihan t ON t.id = b.tagihan_id
     JOIN penyewa p ON p.id = t.penyewa_id
@@ -49,7 +50,7 @@ if (empty($kodeReferensi)) {
 <html lang="id"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bukti Pembayaran — KelolaKost</title>
+    <title><?= $b['metode_bayar'] === 'qris' ? 'Bukti Pembayaran QRIS' : 'Bukti Pembayaran' ?> — KelolaKost</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -70,10 +71,19 @@ if (empty($kodeReferensi)) {
             <tbody>
                 <tr><td class="text-muted">No. Referensi</td><td><strong><?= e($kodeReferensi) ?></strong></td></tr>
                 <tr><td class="text-muted">Nama Penyewa</td><td><?= e($b['nama']) ?></td></tr>
+                <tr><td class="text-muted">Email Penagihan</td><td><?= e(email_penagihan($b) ?: '-') ?></td></tr>
                 <tr><td class="text-muted">Kamar</td><td><?= e($b['nomor_kamar'] ?? '-') ?> (<?= e($b['tipe'] ?? '-') ?>)</td></tr>
                 <tr><td class="text-muted">Periode Tagihan</td><td><?= bulan_nama((int) $b['periode_bulan']) . ' ' . (int) $b['periode_tahun'] ?></td></tr>
                 <tr><td class="text-muted">Tanggal Bayar</td><td><?= tanggal_id($b['tanggal_bayar']) ?></td></tr>
-                <tr><td class="text-muted">Metode Pembayaran</td><td><span class="badge badge-neutral"><?= e($labelMetode[$b['metode_bayar']] ?? ucfirst($b['metode_bayar'])) ?></span></td></tr>
+                <tr>
+                    <td class="text-muted">Metode Pembayaran</td>
+                    <td>
+                        <span class="badge badge-neutral"><?= e($labelMetode[$b['metode_bayar']] ?? ucfirst($b['metode_bayar'])) ?></span>
+                        <?php if ($b['metode_bayar'] === 'qris'): ?>
+                            <span class="text-muted" style="font-size:12px;">(simulasi)</span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
                 <?php if (!empty($b['catatan'])): ?>
                     <tr><td class="text-muted">Catatan</td><td><?= e($b['catatan']) ?></td></tr>
                 <?php endif; ?>

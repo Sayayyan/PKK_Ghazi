@@ -4,6 +4,7 @@ require_once __DIR__ . '/includes/auth_admin.php';
 
 $page_title = 'Tagihan';
 $active     = 'tagihan';
+$set        = pengaturan($pdo);
 
 $editId = (int) ($_GET['edit'] ?? 0);
 $edit   = null;
@@ -23,9 +24,10 @@ $daftarPenyewa = $pdo->query('
 ')->fetchAll();
 
 $daftarTagihan = $pdo->query('
-    SELECT t.*, p.nama
+    SELECT t.*, p.nama, p.email, p.email_penagihan, k.nomor_kamar
     FROM tagihan t
     JOIN penyewa p ON p.id = t.penyewa_id
+    LEFT JOIN kamar k ON k.id = p.kamar_id
     ORDER BY t.periode_tahun DESC, t.periode_bulan DESC, t.id ASC
 ')->fetchAll();
 
@@ -139,7 +141,17 @@ require __DIR__ . '/includes/header.php';
         </thead>
         <tbody>
             <?php foreach ($daftarTagihan as $t): ?>
-                <?php $lunas = $t['status'] === 'lunas'; ?>
+                <?php
+                $lunas      = $t['status'] === 'lunas';
+                $emailTagih = email_penagihan($t);
+                $periode    = bulan_nama((int) $t['periode_bulan']) . ' ' . (int) $t['periode_tahun'];
+                $subjek     = 'Tagihan ' . $set['nama_kost'] . ' — ' . $periode;
+                $isi        = "Halo " . $t['nama'] . ",\n\n"
+                    . 'Tagihan sewa kamar ' . ($t['nomor_kamar'] ?? '-') . ' untuk periode ' . $periode . ' sebesar ' . rupiah($t['jumlah_tagihan']) . " telah diterbitkan.\n"
+                    . 'Jatuh tempo: ' . tanggal_id($t['tanggal_jatuh_tempo']) . ".\n\n"
+                    . "Silakan melakukan pembayaran melalui portal penyewa.\n\n"
+                    . 'Terima kasih,' . "\n" . $set['nama_kost'];
+                ?>
                 <tr>
                     <td><strong><?= e($t['nama']) ?></strong></td>
                     <td><?= bulan_nama((int) $t['periode_bulan']) . ' ' . (int) $t['periode_tahun'] ?></td>
@@ -151,6 +163,9 @@ require __DIR__ . '/includes/header.php';
                         </span>
                     </td>
                     <td class="actions-cell">
+                        <?php if (!$lunas && $emailTagih !== ''): ?>
+                            <a href="<?= e(link_mailto($emailTagih, $subjek, $isi)) ?>" class="btn btn-outline btn-sm">Kirim</a>
+                        <?php endif; ?>
                         <a href="tagihan.php?edit=<?= (int) $t['id'] ?>" class="btn btn-outline btn-sm">Edit</a>
                         <a href="tagihan_proses.php?action=delete&id=<?= (int) $t['id'] ?>" class="btn btn-danger btn-sm confirm-delete" data-confirm="Hapus tagihan ini?">Hapus</a>
                     </td>

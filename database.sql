@@ -85,9 +85,10 @@ CREATE TABLE penyewa (
     id            INT UNSIGNED  NOT NULL AUTO_INCREMENT,
     nama          VARCHAR(100)  NOT NULL,
     kamar_id      INT UNSIGNED  NOT NULL,
-    no_hp         VARCHAR(30)   NULL,
-    email         VARCHAR(120)  NULL,
-    no_ktp        VARCHAR(30)   NULL,
+    no_hp           VARCHAR(30)   NULL,
+    email           VARCHAR(120)  NULL,
+    email_penagihan VARCHAR(120)  NULL,
+    no_ktp          VARCHAR(30)   NULL,
     tanggal_masuk DATE          NOT NULL,
     alamat_asal   TEXT          NULL,
     status        ENUM('aktif','nonaktif') NOT NULL DEFAULT 'aktif',
@@ -100,9 +101,9 @@ CREATE TABLE penyewa (
         ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO penyewa (id, nama, kamar_id, no_hp, email, no_ktp, tanggal_masuk, alamat_asal, status, password, created_at) VALUES
-(6, 'gojay', 2, '081398913187', 'gojay@demo.test', '123456789', '2026-09-07', 'tambun', 'aktif', '$2y$10$kJ/Xy0i3twMiRFLwhEGd5OCaLkPE4Zrj3GJrGDfSjhmvHNcopBt8O', '2026-09-07 10:00:00'),
-(8, 'gogo',  1, '081234567890', 'gogo@demo.test',  '987654321', '2026-09-14', 'Bekasi', 'aktif', '$2y$10$ay//xM5p0/xcZz0m14wT2..MGW3a5SUgOctphuX1qIKrs.v9whz6e', '2026-09-14 10:00:00');
+INSERT INTO penyewa (id, nama, kamar_id, no_hp, email, email_penagihan, no_ktp, tanggal_masuk, alamat_asal, status, password, created_at) VALUES
+(6, 'gojay', 2, '081398913187', 'gojay@demo.test', 'gojay.tagihan@demo.test', '123456789', '2026-09-07', 'tambun', 'aktif', '$2y$10$kJ/Xy0i3twMiRFLwhEGd5OCaLkPE4Zrj3GJrGDfSjhmvHNcopBt8O', '2026-09-07 10:00:00'),
+(8, 'gogo',  1, '081234567890', 'gogo@demo.test',  NULL, '987654321', '2026-09-14', 'Bekasi', 'aktif', '$2y$10$ay//xM5p0/xcZz0m14wT2..MGW3a5SUgOctphuX1qIKrs.v9whz6e', '2026-09-14 10:00:00');
 
 -- ---------------------------------------------------------
 -- Tagihan

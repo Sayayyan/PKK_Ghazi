@@ -32,6 +32,7 @@ $nama         = trim($_POST['nama'] ?? '');
 $kamarId      = (int) ($_POST['kamar_id'] ?? 0);
 $noHp         = trim($_POST['no_hp'] ?? '');
 $email        = trim($_POST['email'] ?? '');
+$emailPenagihan = trim($_POST['email_penagihan'] ?? '');
 $noKtp        = trim($_POST['no_ktp'] ?? '');
 $tanggalMasuk = trim($_POST['tanggal_masuk'] ?? '');
 $alamatAsal   = trim($_POST['alamat_asal'] ?? '');
@@ -42,6 +43,11 @@ if ($nama === '' || $kamarId <= 0 || $tanggalMasuk === '') {
     redirect($action === 'update' ? 'penyewa.php?edit=' . $id : 'penyewa.php');
 }
 
+if ($emailPenagihan !== '' && !filter_var($emailPenagihan, FILTER_VALIDATE_EMAIL)) {
+    flash('danger', 'Format email penagihan tidak valid.');
+    redirect($action === 'update' ? 'penyewa.php?edit=' . $id : 'penyewa.php');
+}
+
 $stmt = $pdo->prepare('SELECT id FROM kamar WHERE id = ?');
 $stmt->execute([$kamarId]);
 if (!$stmt->fetchColumn()) {
@@ -49,7 +55,8 @@ if (!$stmt->fetchColumn()) {
     redirect($action === 'update' ? 'penyewa.php?edit=' . $id : 'penyewa.php');
 }
 
-$emailDb = $email === '' ? null : $email;
+$emailDb          = $email === '' ? null : $email;
+$emailPenagihanDb = $emailPenagihan === '' ? null : $emailPenagihan;
 $kamarLama = 0;
 
 try {
@@ -58,12 +65,12 @@ try {
         $stmt->execute([$id]);
         $kamarLama = (int) $stmt->fetchColumn();
 
-        $stmt = $pdo->prepare('UPDATE penyewa SET nama = ?, kamar_id = ?, no_hp = ?, email = ?, no_ktp = ?, tanggal_masuk = ?, alamat_asal = ?, status = ? WHERE id = ?');
-        $stmt->execute([$nama, $kamarId, $noHp, $emailDb, $noKtp, $tanggalMasuk, $alamatAsal, $status, $id]);
+        $stmt = $pdo->prepare('UPDATE penyewa SET nama = ?, kamar_id = ?, no_hp = ?, email = ?, email_penagihan = ?, no_ktp = ?, tanggal_masuk = ?, alamat_asal = ?, status = ? WHERE id = ?');
+        $stmt->execute([$nama, $kamarId, $noHp, $emailDb, $emailPenagihanDb, $noKtp, $tanggalMasuk, $alamatAsal, $status, $id]);
         flash('success', 'Data penyewa berhasil diperbarui.');
     } else {
-        $stmt = $pdo->prepare('INSERT INTO penyewa (nama, kamar_id, no_hp, email, no_ktp, tanggal_masuk, alamat_asal, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        $stmt->execute([$nama, $kamarId, $noHp, $emailDb, $noKtp, $tanggalMasuk, $alamatAsal, $status]);
+        $stmt = $pdo->prepare('INSERT INTO penyewa (nama, kamar_id, no_hp, email, email_penagihan, no_ktp, tanggal_masuk, alamat_asal, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute([$nama, $kamarId, $noHp, $emailDb, $emailPenagihanDb, $noKtp, $tanggalMasuk, $alamatAsal, $status]);
         flash('success', 'Penyewa baru berhasil ditambahkan.');
     }
 

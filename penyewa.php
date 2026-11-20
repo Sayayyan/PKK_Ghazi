@@ -78,6 +78,12 @@ require __DIR__ . '/includes/header.php';
             </div>
         </div>
 
+        <label for="email_penagihan">Email Penagihan (opsional)</label>
+        <input type="email" id="email_penagihan" name="email_penagihan" placeholder="Kosongkan untuk memakai email di atas" value="<?= e($edit['email_penagihan'] ?? '') ?>">
+        <p class="text-muted" style="font-size:12px; margin-top:-8px;">
+            Dipakai untuk mengirim tagihan dan pengingat. Jika kosong, sistem memakai email login penyewa.
+        </p>
+
         <div class="form-row">
             <div>
                 <label for="no_ktp">No. KTP</label>
@@ -116,6 +122,7 @@ require __DIR__ . '/includes/header.php';
                 <th>Nama</th>
                 <th>Kamar</th>
                 <th>No. HP</th>
+                <th>Email Penagihan</th>
                 <th>Tanggal Masuk</th>
                 <th>Status</th>
                 <th>Aksi</th>
@@ -128,6 +135,17 @@ require __DIR__ . '/includes/header.php';
                     <td><strong><?= e($p['nama']) ?></strong></td>
                     <td><?= e($p['nomor_kamar'] ?? '-') ?></td>
                     <td><?= e($p['no_hp']) ?></td>
+                    <td>
+                        <?php $emailTagih = email_penagihan($p); ?>
+                        <?php if ($emailTagih !== ''): ?>
+                            <a href="mailto:<?= e($emailTagih) ?>"><?= e($emailTagih) ?></a>
+                            <?php if (empty($p['email_penagihan'])): ?>
+                                <span class="text-muted" style="font-size:11px;">(ikut email login)</span>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <span class="text-muted">-</span>
+                        <?php endif; ?>
+                    </td>
                     <td><?= tanggal_id($p['tanggal_masuk']) ?></td>
                     <td>
                         <span class="badge <?= $aktif ? 'badge-success' : 'badge-neutral' ?>">

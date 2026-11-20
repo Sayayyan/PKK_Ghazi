@@ -67,6 +67,16 @@ $labelMetode = [
                 <tr><td class="text-muted">Tipe</td><td><?= e($penyewa['tipe'] ?? '-') ?></td></tr>
                 <tr><td class="text-muted">Harga per Bulan</td><td><?= rupiah($penyewa['harga_bulanan'] ?? 0) ?></td></tr>
                 <tr><td class="text-muted">Tanggal Masuk</td><td><?= tanggal_id($penyewa['tanggal_masuk']) ?></td></tr>
+                <tr>
+                    <td class="text-muted">Email Penagihan</td>
+                    <td>
+                        <?php $emailTagih = email_penagihan($penyewa); ?>
+                        <?= e($emailTagih !== '' ? $emailTagih : '-') ?>
+                        <?php if (empty($penyewa['email_penagihan'])): ?>
+                            <span class="text-muted" style="font-size:12px;">(ikut email akun)</span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -117,12 +127,20 @@ $labelMetode = [
                             <td><?= bulan_nama((int) $b['periode_bulan']) . ' ' . (int) $b['periode_tahun'] ?></td>
                             <td><?= tanggal_id($b['tanggal_bayar']) ?></td>
                             <td><?= rupiah($b['jumlah_bayar']) ?></td>
-                            <td><span class="badge badge-neutral"><?= e($labelMetode[$b['metode_bayar']] ?? ucfirst($b['metode_bayar'])) ?></span></td>
-                            <td><a href="bukti_pembayaran.php?id=<?= (int) $b['id'] ?>" class="btn btn-outline btn-sm">Lihat Bukti</a></td>
+                            <td>
+                                <span class="badge badge-neutral"><?= e($labelMetode[$b['metode_bayar']] ?? ucfirst($b['metode_bayar'])) ?></span>
+                                <?php if (!empty($b['kode_referensi'])): ?>
+                                    <div class="text-muted" style="font-size:11px; margin-top:2px;"><?= e($b['kode_referensi']) ?></div>
+                                <?php endif; ?>
+                            </td>
+                            <td><a href="bukti_pembayaran.php?id=<?= (int) $b['id'] ?>" class="btn btn-outline btn-sm">Lihat / Cetak Bukti</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <p class="text-muted" style="font-size:12px; margin-top:8px;">
+                Bukti pembayaran QRIS dapat dilihat dan dicetak/disimpan sebagai PDF melalui tombol di atas.
+            </p>
         <?php endif; ?>
     </div>
 

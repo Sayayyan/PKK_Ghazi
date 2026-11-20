@@ -42,19 +42,24 @@ Tampilan, alur, dan struktur halaman direkonstruksi agar **sama dengan situs asl
   pendapatan bulan berjalan, dan daftar tagihan mendekati jatuh tempo.
 - **Data Kamar** — CRUD kamar (nomor, tipe, harga, fasilitas, status).
 - **Penyewa** — CRUD penyewa; status kamar otomatis sinkron (terisi/kosong).
-- **Tagihan** — CRUD tagihan bulanan; nominal otomatis mengikuti harga kamar penyewa.
+  Dilengkapi **email penagihan** yang boleh berbeda dari email login.
+- **Tagihan** — CRUD tagihan bulanan; nominal otomatis mengikuti harga kamar penyewa,
+  plus tombol **Kirim** untuk mengirim tagihan ke email penagihan.
 - **Pembayaran** — catat pembayaran (tunai/transfer/QRIS/lainnya), lihat bukti, hapus
   pembayaran; status tagihan otomatis berubah lunas/belum lunas.
-- **Pengingat Jatuh Tempo** — dikelompokkan menjadi terlambat, ≤ 7 hari, dan akan datang.
+- **Pengingat Jatuh Tempo** — dikelompokkan menjadi terlambat, ≤ 7 hari, dan akan datang;
+  menampilkan email penagihan dan tombol **Kirim Pengingat**.
 - **Laporan Keuangan** — rekap pemasukan per bulan/tahun beserta rincian transaksi.
 - **Pengaturan Kost** — ubah nama, alamat, deskripsi, kontak, jam operasional yang tampil
   di beranda.
 - **Kelola Admin** — tambah admin, reset password, dan hapus akun admin lain.
 
 ### Portal Penyewa
-- Melihat data kamar, tagihan, dan riwayat pembayaran.
+- Melihat data kamar, email penagihan, tagihan, dan riwayat pembayaran.
 - **Bayar QRIS (simulasi)** — menampilkan QR dummy, lalu mencatat pembayaran dan
-  menampilkan **bukti pembayaran** yang bisa dicetak/disimpan sebagai PDF.
+  menampilkan **bukti pembayaran QRIS** yang bisa dilihat, dicetak, atau disimpan
+  sebagai PDF.
+- Referensi pembayaran QRIS tampil di riwayat dan pada bukti pembayaran.
 - Mengubah email dan password akun sendiri.
 
 ---
@@ -102,15 +107,17 @@ Mengelola kamar beserta tipe, harga sewa, fasilitas, dan statusnya.
 
 ### 7. Data Penyewa
 
-Mengelola data penghuni. Saat penyewa ditambahkan, kamar otomatis berubah menjadi
-**Terisi**; saat dihapus, kamar kembali **Kosong**.
+Mengelola data penghuni, termasuk **email penagihan** yang bisa berbeda dari email login.
+Jika dikosongkan, sistem otomatis memakai email login. Saat penyewa ditambahkan, kamar
+otomatis berubah menjadi **Terisi**; saat dihapus, kamar kembali **Kosong**.
 
 ![Data Penyewa](docs/screenshots/07-data-penyewa.png)
 
 ### 8. Tagihan
 
 Membuat tagihan bulanan. Jumlah tagihan otomatis terisi sesuai harga kamar penyewa dan
-masih bisa diubah manual.
+masih bisa diubah manual. Tombol **Kirim** membuka email berisi rincian tagihan ke
+email penagihan penyewa.
 
 ![Tagihan](docs/screenshots/08-tagihan.png)
 
@@ -124,6 +131,7 @@ tagihan; menghapusnya mengembalikan status menjadi belum lunas.
 ### 10. Pengingat Jatuh Tempo
 
 Tagihan dikelompokkan menjadi **terlambat**, **jatuh tempo ≤ 7 hari**, dan **akan datang**.
+Setiap baris menampilkan email penagihan dan tombol **Kirim Pengingat**.
 
 ![Pengingat Jatuh Tempo](docs/screenshots/10-pengingat.png)
 
@@ -147,7 +155,8 @@ Menambah akun pengelola lain, reset password, dan menghapus akun admin.
 
 ### 14. Portal Penyewa
 
-Halaman khusus penghuni: data kamar, daftar tagihan, riwayat pembayaran, dan pengaturan akun.
+Halaman khusus penghuni: data kamar, email penagihan, daftar tagihan, riwayat pembayaran
+dengan nomor referensi QRIS, serta tombol **Lihat / Cetak Bukti**.
 
 ![Portal Penyewa](docs/screenshots/14-portal-penyewa.png)
 
@@ -160,8 +169,8 @@ sungguhan.
 
 ### 16. Bukti Pembayaran
 
-Bukti otomatis setelah pembayaran berhasil, dapat dicetak atau disimpan sebagai PDF melalui
-browser.
+Bukti otomatis setelah pembayaran berhasil. Menampilkan nomor referensi QRIS, email
+penagihan, dan keterangan simulasi; dapat dicetak atau disimpan sebagai PDF melalui browser.
 
 ![Bukti Pembayaran](docs/screenshots/16-bukti-pembayaran.png)
 
@@ -199,6 +208,7 @@ PKK_Ghazi/
 │   └── header.php             # sidebar + layout admin
 ├── koneksi.php                # baca .env, bootstrap & koneksi PDO
 ├── database.sql               # skema + data demo
+├── migrasi_email_penagihan.sql # migrasi kolom email penagihan (database lama)
 ├── index.php                  # beranda publik
 ├── login.php                  # login pengelola
 ├── login_penyewa.php          # login penyewa
@@ -265,6 +275,13 @@ Buka terminal di VS Code (**Terminal → New Terminal**), lalu jalankan:
 ```powershell
 & 'C:\xampp\mysql\bin\mysql.exe' -u root --default-character-set=utf8mb4 -e "source D:/PKK_Ghazi/database.sql"
 ```
+
+> **Sudah punya database lama?** Jalankan migrasi berikut sekali agar kolom
+> `email_penagihan` ditambahkan tanpa menghapus data:
+>
+> ```powershell
+> & 'C:\xampp\mysql\bin\mysql.exe' -u root --default-character-set=utf8mb4 kelolakost -e "source D:/PKK_Ghazi/migrasi_email_penagihan.sql"
+> ```
 
 ### Langkah 4 — Sesuaikan konfigurasi (jika perlu)
 
@@ -348,6 +365,9 @@ VALUES ('Nama Anda', 'username_anda', 'HASIL_HASH_DI_ATAS');
 - **QRIS masih simulasi.** QR yang tampil adalah payload dummy, dan tombol
   *“Saya Sudah Membayar (Simulasi)”* hanya mencatat pembayaran ke database — tidak ada
   transaksi uang sungguhan.
+- **Email penagihan memakai `mailto:`**, bukan SMTP. Tombol *Kirim* dan *Kirim Pengingat*
+  membuka aplikasi email bawaan pengelola dengan subjek dan isi yang sudah terisi, jadi
+  tidak perlu mengatur kredensial email di aplikasi.
 - **Status kamar otomatis** mengikuti ada/tidaknya penyewa aktif pada kamar tersebut.
 - **Status tagihan otomatis** menjadi *Lunas* ketika total pembayaran ≥ jumlah tagihan,
   dan kembali *Belum Lunas* jika pembayaran dihapus.
