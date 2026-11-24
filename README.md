@@ -329,7 +329,18 @@ Lalu buka <http://localhost:8000> di browser.
 
 ### Langkah 6 — Login
 
-Buka `login.php` dan masuk dengan akun pengelola yang terdaftar di database.
+Setelah database di-import, langsung masuk memakai **akun demo** berikut (ketik apa adanya,
+bukan hash):
+
+| Halaman | Username / Email | Password |
+|---|---|---|
+| Login Pengelola — `login.php` | `admin` | `admin123` |
+| Login Pengelola (akun kedua) | `gojay` | `admin123` |
+| Login Penyewa — `login_penyewa.php` | `gojay@demo.test` | `penyewa123` |
+| Login Penyewa (akun kedua) | `gogo@demo.test` | `penyewa123` |
+
+> Password disimpan di database dalam bentuk hash `password_hash()`. Anda cukup mengetik
+> password aslinya (`admin123` / `penyewa123`) di form login — sistem yang mencocokkan hash-nya.
 
 Jika perlu membuat akun admin baru, buat hash password terlebih dahulu:
 

@@ -40,6 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="brand">Kelola<span style="color:#D4A34C">Kost</span></div>
         <div class="tagline">Portal Penyewa</div>
 
+        <div class="demo-hint">
+            <strong>Akun demo</strong>
+            Email <code>gojay@demo.test</code> · Password <code>penyewa123</code>
+        </div>
+
         <?php if ($error !== ''): ?>
         <div class="alert alert-danger"><?= e($error) ?></div>
         <?php else: render_flash(); endif; ?>

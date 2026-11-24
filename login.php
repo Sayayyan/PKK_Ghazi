@@ -40,6 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="brand">Kelola<span style="color:#D4A34C">Kost</span></div>
         <div class="tagline">Sistem Informasi Manajemen Kost</div>
 
+        <div class="demo-hint">
+            <strong>Akun demo</strong>
+            Username <code>admin</code> · Password <code>admin123</code>
+        </div>
+
         <?php if ($error !== ''): ?>
         <div class="alert alert-danger"><?= e($error) ?></div>
         <?php else: render_flash(); endif; ?>

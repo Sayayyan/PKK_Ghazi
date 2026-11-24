@@ -54,9 +54,12 @@ CREATE TABLE admin (
     UNIQUE KEY uq_admin_username (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Password demo (plain text -> hash):
+--   admin  / admin123
+--   gojay  / admin123
 INSERT INTO admin (id, nama_lengkap, username, password, created_at) VALUES
-(1, 'Administrator Kost', 'admin', '$2y$10$oo1WdYKu.1mK8ZKz4Ci2uuMI6htFG3fZw7ZhsTyyTLjaA1ZzDg6XK', '2026-08-01 09:00:00'),
-(2, 'Ghazi', 'gojay', '$2y$10$L.2nHjw8EcYEGF31dKrsyO/0t.TG75w4QrbWTFnZ2KX0z7HZm/twa', '2026-08-02 09:00:00');
+(1, 'Administrator Kost', 'admin', '$2y$10$YEn0HULeFsnp4aE7luIO4.ZsYOAWvjhr6ue6CfrTfYzV6WKv0CyJO', '2026-08-01 09:00:00'),
+(2, 'Ghazi', 'gojay', '$2y$10$YEn0HULeFsnp4aE7luIO4.ZsYOAWvjhr6ue6CfrTfYzV6WKv0CyJO', '2026-08-02 09:00:00');
 
 -- ---------------------------------------------------------
 -- Kamar
@@ -101,9 +104,12 @@ CREATE TABLE penyewa (
         ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Password portal penyewa (email login / password):
+--   gojay@demo.test / penyewa123
+--   gogo@demo.test  / penyewa123
 INSERT INTO penyewa (id, nama, kamar_id, no_hp, email, email_penagihan, no_ktp, tanggal_masuk, alamat_asal, status, password, created_at) VALUES
-(6, 'gojay', 2, '081398913187', 'gojay@demo.test', 'gojay.tagihan@demo.test', '123456789', '2026-09-07', 'tambun', 'aktif', '$2y$10$kJ/Xy0i3twMiRFLwhEGd5OCaLkPE4Zrj3GJrGDfSjhmvHNcopBt8O', '2026-09-07 10:00:00'),
-(8, 'gogo',  1, '081234567890', 'gogo@demo.test',  NULL, '987654321', '2026-09-14', 'Bekasi', 'aktif', '$2y$10$ay//xM5p0/xcZz0m14wT2..MGW3a5SUgOctphuX1qIKrs.v9whz6e', '2026-09-14 10:00:00');
+(6, 'gojay', 2, '081398913187', 'gojay@demo.test', 'gojay.tagihan@demo.test', '123456789', '2026-09-07', 'tambun', 'aktif', '$2y$10$wuuTFwYktLMMPAVPxiES8uOw3y3CkMEp/moozZIWELDTwDn7sZVWy', '2026-09-07 10:00:00'),
+(8, 'gogo',  1, '081234567890', 'gogo@demo.test',  NULL, '987654321', '2026-09-14', 'Bekasi', 'aktif', '$2y$10$wuuTFwYktLMMPAVPxiES8uOw3y3CkMEp/moozZIWELDTwDn7sZVWy', '2026-09-14 10:00:00');
 
 -- ---------------------------------------------------------
 -- Tagihan
